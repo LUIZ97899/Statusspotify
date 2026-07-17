@@ -9,29 +9,23 @@ fetch("/api/perfil?token="+token)
 .then(res=>res.json()),
 
 fetch("/api/top?token="+token)
-.then(res=>res.json()),
-
-fetch("/api/audio?token="+token)
-.then(res=>res.json()),
-
-fetch("/api/genres?token="+token)
 .then(res=>res.json())
 
 ])
 
 
-.then(([perfil,top,audio,generos])=>{
+.then(([perfil,top])=>{
 
 
 let html = `
 
 <div class="card">
 
-<img src="${perfil.images?.[0]?.url || ''}" width="120">
+<img width="120" src="${perfil.images?.[0]?.url || ''}">
 
 <h2>${perfil.display_name}</h2>
 
-<p>Perfil Musical</p>
+<p>Seu Perfil Musical</p>
 
 </div>
 
@@ -41,13 +35,13 @@ let html = `
 `;
 
 
-top.artistas.forEach(artista=>{
+top.artistas.forEach(a=>{
 
 html += `
 
 <div class="card">
 
-${artista.name}
+${a.name}
 
 </div>
 
@@ -63,52 +57,17 @@ html += `
 `;
 
 
-top.musicas.forEach(musica=>{
+top.musicas.forEach(m=>{
 
 html += `
 
 <div class="card">
 
-<b>${musica.name}</b>
+<b>${m.name}</b>
 
 <br>
 
-${musica.artists[0].name}
-
-</div>
-
-`;
-
-});
-
-
-html += `
-
-<h2>🧬 DNA Musical</h2>
-
-<div class="card">
-
-Energia: ${audio.energia}%<br>
-
-Dança: ${audio.danca}%<br>
-
-Acústico: ${audio.acustico}%
-
-</div>
-
-
-<h2>🎸 Gêneros principais</h2>
-
-`;
-
-
-generos.forEach(genero=>{
-
-html += `
-
-<div class="card">
-
-${genero[0]}
+${m.artists[0].name}
 
 </div>
 
@@ -125,10 +84,10 @@ document.getElementById("resultado").innerHTML = html;
 
 .catch(erro=>{
 
+console.log(erro);
+
 document.getElementById("resultado").innerHTML =
 "Erro ao carregar perfil";
-
-console.log(erro);
 
 });
 
